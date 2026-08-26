@@ -9,5 +9,11 @@ type Users struct {
 	// autoIncrement -> perintah untuk database agar mengisi ID otomatis sesuai dengan angka urutan
 	// tanda (-) -> abaikan field ini dan user tidak bisa mengisi ID sendiri
 	// json -> menyertakan ID agar sistem mengembalikan respon pada frontend jika registrasi user berhasil
-	Name string `json:"name"`
+	Name        string `json:"name" gorm:"unique"`
+	Email       string `json:"email" gorm:"unique"`
+	Password    string `json:"password"`
+	PhoneNumber string `json:"phone_number" gorm:"uniqueIndex"`
+	// not null -> data tidak boleh kosong oleh user
+	// size:20 -> jumlah digit maksimal 20
+
 }
