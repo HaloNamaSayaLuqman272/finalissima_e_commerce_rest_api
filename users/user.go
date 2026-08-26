@@ -29,10 +29,12 @@ type Users struct {
 	// autoIncrement -> perintah untuk database agar mengisi ID otomatis sesuai dengan angka urutan
 	// tanda (-) -> abaikan field ini dan user tidak bisa mengisi ID sendiri
 	// json -> menyertakan ID agar sistem mengembalikan respon pada frontend jika registrasi user berhasil
-	Username    string `json:"username" gorm:"unique"`
-	Email       string `json:"email" gorm:"unique"`
-	Password    string `json:"password"`
+	Username string `json:"username" gorm:"unique"`
+	Email    string `json:"email" gorm:"unique"`
+	Password string `json:"password"`
+	// kita akan melakukan validasi password di tempat terpisah
 	PhoneNumber string `json:"phone_number" gorm:"uniqueIndex"`
+	// kita juga akan melakukan validasi nomer telepon di tempat terpisah
 	// not null -> data tidak boleh kosong oleh user
 	// size:20 -> jumlah digit maksimal 20
 	Address        string         `json:"address" gorm:"type:text"`
@@ -52,4 +54,11 @@ type Users struct {
 	// dengan fungsi Unscoped()
 }
 
-//
+// sekarang anggaplah registrasi sudah dibuat dan berhasil disimpan,
+// suatu saat user mencoba memperbarui data,
+// maka kita perlu menyediakan type struct untuk UpdateProfileRequest
+type EditProfileRequest struct {
+	Username string `form:"username" validate:"required"`
+	Email    string `form:"email" validate:"required,email"`
+	Password string `form:"password" validate:"required"`
+}
