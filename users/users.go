@@ -1,6 +1,7 @@
 package users
 
 import (
+	"mime/multipart"
 	"time"
 
 	"gorm.io/gorm"
@@ -23,7 +24,7 @@ import (
 // created_at, menunjukkan waktu kapan registrasi sukses dibuat
 // updated_at, menunjukkan waktu kapan update profile dilakukan
 // deleted_at, menunjukkan waktu kapan user dihapus dari sistem
-type Users struct {
+type User struct {
 	ID uint `json:"id" form:"-" gorm:"primaryKey;autoIncrement"`
 	// primaryKey -> field ini akan dijadikan sebagai kunci utama tabel SQL ||
 	// autoIncrement -> perintah untuk database agar mengisi ID otomatis sesuai dengan angka urutan
@@ -60,5 +61,17 @@ type Users struct {
 type EditProfileRequest struct {
 	Username string `form:"username" validate:"required"`
 	Email    string `form:"email" validate:"required,email"`
-	Password string `form:"password" validate:"required"`
+	Password string `form:"password" validate:"min=8,containsSpecialCharacter,containsNumber"`
+	// berbeda dengan username dan email yg menggunakan validate required,
+	// password membutuhkan validasi yg mengandung angka dan karakter spesial
+	// tujuan nya agar non-user tidak bisa dengan mudah menebak password baru
+	PhoneNumber    string `form:"phone_number" validate:"required,min=10,containsNumberOnly"`
+	Address        string `form:"address" validate:"required,containsNumber"`
+	ProvinceID     uint   `form:"province_id" validate:"required"`
+	DistrictID     uint   `form:"district_id" validate:"required"`
+	ProfilePicture string
+	File           *multipart.FileHeader
+	// untuk file kita menggunakan multipart.FileHeader
+	// dengan tujuan menampung informasi dan metadata dari request HTTP yg mengandung
+	// nama file dan ukuran file, serta tipe content
 }
