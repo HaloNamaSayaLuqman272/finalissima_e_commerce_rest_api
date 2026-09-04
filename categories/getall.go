@@ -23,6 +23,32 @@ func (g getall) GetAllCategories(ctx context.Context, pagination utils.Paginatio
 	// dan "pagination" tipe data dari "utils.Pagination" yg akan menampilkan
 	// jumlah halaman dan per halaman akan menampilkan maksimal berapa baris data
 	categories := []Category{}
-	//
+	// "[]Category{}" adalah slice of Category{} yg rencana nya
+	// akan menjadi tempat menampung banyak kategori, saat ini masih kosongan
+	// dan "[]Category{}" akan dibungkus variabel "categories"
 
+	if err := g.repository.WithContext(ctx).Scopes(utils.Paginate(&categories, &pagination, g.repository)).Find(&categories).Error; err != nil {
+		// selanjutnya kita membuat alur "GetAllCategory", kita mengnginkan
+		// Go agar menampilkan "semua kategori yg ada", menggunakan pengaturan
+		// halaman dari "pagination", dan menambahkan "g.repository"
+		// untuk menyambungkan ke database
+		// ".Find(&categories)" kemudian kita menjalankan perintah "Find"
+		// untuk mencari semua hasil "categories" dan ambil semua data nya
+		// dan mengambil field "Error" dari proses operasi "Find"
+		// apabila terjadi masalah saat query dijalankan
+		// lalu kita bungkus ini ke dalam variabel "err";
+		// namun bila variabel "err" tidak bernilai "nil" atau tidak bersih dari error
+		return utils.Pagination{}, err
+		//maka kembalikan "Pagination{}" kosongan dan hasil error
+		// kita melakukan ini agar memastikan pemanggil fungsi tidak keliru
+		// menganggap data "pagination" yg error itu valid dan "err" akan
+		// memberitahu penyebab error nya agar bisa ditangani dengan tepat
+	}
+
+	pagination.Rows = categories
+	// hasil dari "categories" akan disimpan pada field "Rows" dari struct "pagination"
+
+	return pagination, nil
+	// jika "GetAllCategories" berhasil maka akan mengembalikan isi "pagination"
+	// dan "nil"
 }
