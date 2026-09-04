@@ -12,7 +12,7 @@ func GetValidationErrorMessage(message string) []string {
 	// berarti ini adalah fungsi biasa, bukan method,
 	// yg bisa dipanggil langsung lewat nama package "utils",
 	// exp: utils.GetValidationErrorMessage("error message")
-	// "message string" adalah parameter yg diterima fungsi ini,
+	// "message string" adalah parameter input fungsi ini,
 	// dan bertipe data string
 	// "[]string" adalah tipe data yg dikembalikan fungsi ini,
 	// yaitu slice of string, artinya fungsi ini akan memecah satu pesan yg panjang

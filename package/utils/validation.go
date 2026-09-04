@@ -9,7 +9,7 @@ func ValidateFile(extension string) bool {
 	// berarti ini adalah fungsi biasa, bukan method,
 	// yg bisa dipanggil langsung lewat nama package "utils",
 	// exp: utils.ValidateFile("file.txt")
-	// "extension string" adalah parameter yg diterima fungsi ini,
+	// "extension string" adalah parameter input fungsi ini,
 	// dan bertipe data string
 	// kita membutuhkan parameter yg diterima agar file diproses
 	// dan dikembalikan dengan mudah diidentifikasi

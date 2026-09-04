@@ -13,7 +13,7 @@ import (
 func GetConfigurance(key string) string {
 	// "func" kita mendeklarasikan adanya fungsi
 	// dan kita namakan fungsi "GetConfigurance"
-	// "key string" adalah parameter penerima yg bernama "key" dengan tipe data "string"
+	// "key string" adalah parameter input yg bernama "key" dengan tipe data "string"
 	// "string" mengembalikan tipe data string
 	isDevelop := os.Getenv("APP_MODE") != "production"
 	// "os" adalah package standar Go untuk berinteraksi dengan sistem operasi

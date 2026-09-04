@@ -75,7 +75,7 @@ func (p *Pagination) GetSearch() string {
 func Paginate(value any, pagination *Pagination, db *gorm.DB) func(db *gorm.DB) *gorm.DB {
 	// "func" kita mendeklarasikan fungsi
 	// dengan nama "Paginate" tanpa memberi variabel penerima
-	// dengan nama parameter "value" tipe data type assertion "any",
+	// dengan nama parameter input "value" tipe data type assertion "any",
 	// "pagination" tipe data pointer dari "Pagination",
 	// dan "db" dengan tipe data package "GORM" method "DB"
 	// "func(db *gorm.DB)" ini adalah pola "closure" atau "high-order function"
@@ -175,9 +175,9 @@ func Paginate(value any, pagination *Pagination, db *gorm.DB) func(db *gorm.DB) 
 
 func PaginateByProductCategory(value any, pagination *Pagination, categoryId uint, db *gorm.DB) func(db *gorm.DB) *gorm.DB {
 	// "func" kita mendeklarasikan sebuah fungsi baru yg bernama "PaginateByProductCategory"
-	//  dengan nama parameter "value" tipe data type assertion "any",
+	//  dengan nama parameter input "value" tipe data type assertion "any",
 	// "pagination" tipe data pointer dari "Pagination",
-	// "categoryId" parameter penerima dengan tipe data uint
+	// "categoryId" parameter input dengan tipe data uint
 	// dan "db" dengan tipe data package "GORM" method "DB"
 	// "func(db *gorm.DB)" ini adalah pola "closure" atau "high-order function"
 	// fungsi yg mengembalikan fungsi yg lain
