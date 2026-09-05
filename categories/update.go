@@ -17,10 +17,10 @@ type update struct {
 // dan ada field "get" yg akan kita gunakan untuk mengambil data "id" mana
 // yg akan di-update
 
-func (u update) UpadateCategory(ctx context.Context, categoryRequest *CategoryRequest, id uint) (Category, error) {
+func (u update) UpdateCategory(ctx context.Context, updateCategoryRequest *CategoryRequest, id uint) (Category, error) {
 	category := models.Category{
-		NameCategory: categoryRequest.NameCategory,
-		Description:  categoryRequest.Description,
+		NameCategory: updateCategoryRequest.NameCategory,
+		Description:  updateCategoryRequest.Description,
 	}
 
 	result := u.repository.WithContext(ctx).Where("id = ?", id).Updates(&category)
