@@ -10,12 +10,11 @@ import (
 type update struct {
 	repository *gorm.DB
 	get
+	// dalam type struct "update" terdapat field "repository" dengan tipe data
+	// pointer ke GORM
+	// dan ada field "get" yg akan kita gunakan untuk mengambil data "id" mana
+	// yg akan di-update
 }
-
-// dalam type struct "update" terdapat field "repository" dengan tipe data
-// pointer ke GORM
-// dan ada field "get" yg akan kita gunakan untuk mengambil data "id" mana
-// yg akan di-update
 
 func (u update) UpdateCategory(ctx context.Context, updateCategoryRequest *CategoryRequest, id uint) (Category, error) {
 	category := models.Category{

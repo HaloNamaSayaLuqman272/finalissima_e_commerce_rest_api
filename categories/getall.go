@@ -11,7 +11,6 @@ type getall struct {
 	// kita membuat type struct bernama "getall" yg rencana nya akan digunakan
 	// untuk menampilkan semua data kategori yg ada
 	repository *gorm.DB
-	create
 	// dalam type struct "getall" kita membutuhkan "repository" yg terhubung dengan *gorm.DB
 }
 
