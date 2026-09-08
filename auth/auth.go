@@ -32,9 +32,11 @@ type RegisterRequest struct {
 	ProvinceID  uint   `json:"province_id" validate:"required"`
 	CityID      uint   `json:"city_id" validate:"required"`
 	DistrictID  uint   `json:"district_id" validate:"required"`
+	// ini adalah daftar data yg harus diisi user untuk mendaftar di awal
 }
 
 type LoginRequest struct {
 	Email    string `json:"email" validate:"required,email"`
 	Password string `json:"password" validate:"required"`
+	// ini adalah data yg harus diisi user saat login
 }

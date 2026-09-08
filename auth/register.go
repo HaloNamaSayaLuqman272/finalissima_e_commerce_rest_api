@@ -14,6 +14,7 @@ type register struct {
 
 func (r register) RegisterUser(ctx context.Context, registerRequest *RegisterRequest) (User, error) {
 	password, err := utils.GeneratePassword(registerRequest.Password)
+	// ini adalah bagian password di-generate menjadi token bcrypt
 	if err != nil {
 		return User{}, err
 	}
@@ -30,12 +31,14 @@ func (r register) RegisterUser(ctx context.Context, registerRequest *RegisterReq
 		Role:        models.Enduser,
 	}
 	result := r.repository.WithContext(ctx).Create(&user)
+	// kita menggunakan pointer "&" memiliki maksud user mengisi datanya
 	if err := result.Error; err != nil {
 		return User{}, err
 	}
 
 	record := new(User)
 	if err := result.WithContext(ctx).Last(record).Error; err != nil {
+		// ini adalah proses data user baru disimpan ke dalam database
 		return User{}, err
 	}
 
