@@ -18,7 +18,7 @@ type Product struct {
 	Barcode     string              `json:"barcode"`
 	Weight      uint                `json:"weight"`
 	ExpiredDate string              `json:"expired_date"`
-	Price       int64               `json:"price"`
+	Price       float64             `json:"price"`
 	Stock       uint                `json:"stock"`
 	ImageLink   string              `json:"image_link"`
 	CreatedAt   time.Time           `json:"created_at"`
@@ -27,15 +27,15 @@ type Product struct {
 }
 
 type ProductRequest struct {
-	NameProduct string `form:"name_product" validate:"required"`
-	CategoryID  uint   `form:"category_id" validate:"required"`
-	Description string `form:"description" validate:"required"`
-	Company     string `form:"company" validate:"required"`
-	Barcode     string `form:"barcode"`
-	Weight      uint   `form:"weight" validate:"required"`
-	ExpiredDate string `form:"expired_date"`
-	Price       int64  `form:"price" validate:"required"`
-	Stock       uint   `form:"stock" validate:"required"`
+	NameProduct string  `form:"name_product" validate:"required"`
+	CategoryID  uint    `form:"category_id" validate:"required"`
+	Description string  `form:"description" validate:"required"`
+	Company     string  `form:"company" validate:"required"`
+	Barcode     string  `form:"barcode"`
+	Weight      uint    `form:"weight" validate:"required"`
+	ExpiredDate string  `form:"expired_date"`
+	Price       float64 `form:"price" validate:"required"`
+	Stock       uint    `form:"stock" validate:"required"`
 	ImageLink   string
 	File        *multipart.FileHeader
 }
