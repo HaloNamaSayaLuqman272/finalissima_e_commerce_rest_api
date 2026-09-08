@@ -8,7 +8,7 @@ import (
 )
 
 type Purchase struct {
-	ID         uint           `gorm:"primaryKey"`
+	ID         uint           `json:"id" gorm:"primaryKey"`
 	UserID     uint           `json:"user_id"`
 	User       User           `json:"user"`
 	ProductID  uint           `json:"product_id"`
@@ -21,7 +21,7 @@ type Purchase struct {
 	Status     PurchaseStatus `json:"status"`
 	ReceivedAt time.Time      `json:"received_at"`
 	CreatedAt  time.Time      `json:"created_at"`
-	DeletedAt  *gorm.DB       `json:"deleted_at"`
+	DeletedAt  *gorm.DB       `json:"deleted_at" gorm:"index"`
 }
 
 type PurchaseStatus string
