@@ -18,7 +18,7 @@ type Product struct {
 	Barcode     string         `json:"barcode" gorm:"unique"`
 	Weight      uint           `json:"weight"`
 	ExpiredDate string         `json:"expired_date"`
-	Price       int64          `json:"price"`
+	Price       float64        `json:"price"`
 	Stock       uint           `json:"stock"`
 	ImageLink   string         `json:"image_link"`
 	CreatedAt   time.Time      `json:"created_at"`
