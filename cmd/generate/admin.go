@@ -12,6 +12,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// file "admin.go" adalah tempat menjelaskan kepada sistem tentang bagaimana
+// data admin yg ada pada file ".env" akan di-generate dan benar-benar menjadi
+// admin pada aplikasi ini
 func main() {
 	dbConfig := drivers.DBConfig{
 		Username: utils.GetConfigurance(constant.DB_USERNAME),
