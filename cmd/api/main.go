@@ -1,6 +1,7 @@
 package main
 
 import (
+	"finalissima_e_commerce_rest_api/api/middlewares"
 	"finalissima_e_commerce_rest_api/database/drivers"
 	"finalissima_e_commerce_rest_api/package/constant"
 	"finalissima_e_commerce_rest_api/package/fileupload"
@@ -30,5 +31,14 @@ func main() {
 		log.Fatalf("error when parsing expire duration: %v\n", err)
 	}
 
-	jwtConfig := 
+	jwtConfig := middlewares.JWTConfig{
+		SecretKey:      utils.GetConfigurance(constant.JWT_SECRET_KEY),
+		ExpireDuration: expireDuration,
+	}
+
+	var (
+		repository = dbConfig.InitDB()
+		cloudinary = cloudinaryConfig.InitCloudinary()
+		e = 
+	)
 }

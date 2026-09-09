@@ -1,6 +1,10 @@
 package users
 
-import "context"
+import (
+	"context"
+
+	"gorm.io/gorm"
+)
 
 // pada bagian "service.go" kita membuat type yg berbentuk interface,
 // rencananya interface ini akan menjadi jalan penghubung "User"
@@ -51,3 +55,10 @@ var _ Service = (*service)(nil)
 // agar bisa memastikan pengecekan terhadap method "service" sudah dilakukan dengan benar
 // "nil" kita menggunakan "nil" karena kita tidak ingin menginisialisasi variabel ini dengan nilai apapun
 // seandainya kita tidak menggunakan "nil" maka Go akan memunculkan error "missing argument for nil"
+
+func New(repository *gorm.DB) Service {
+	return service{
+		get:    get{repository: repository},
+		update: update{repository: repository, get: get{repository: repository}},
+	}
+}
