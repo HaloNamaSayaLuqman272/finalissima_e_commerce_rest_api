@@ -37,15 +37,33 @@ const (
 func (p *PurchaseStatus) Scan(value any) error {
 	// kita mendeklarasikan sebuah fungsi dan bernama "Scan",
 	// memiliki variabel penerima "p" dengan tipe data pointer ke "PurchaseStatus"
+	// "(p *PurchaseStatus)" kita membuat begini agar "Scan(...)" mengubah nilai dari
+	// variabel asli yg memanggilnya "p" dan kita menambah "*" agar fungsi "Scan(...)"
+	// mendapatkan alamat memori asli variabel "PurchaseStatus". Saat "Scan(...)" berhasil
+	// membaca dari database dan mengisinya ke "p", nilai dari variabel asli "PurchaseStatus"
+	// akan ikut berubah dan tersimpan
 	// fungsi "Scan" memiliki parameter penerima "value" tipe data "any"
 	// dan mengembalikan "error" jika terjadi masalah pada proses "Scan"
 	*p = PurchaseStatus(value.([]byte))
+	// "value.([]byte)" proses type assertion untuk memastikan bahwa data yg dikirim
+	// oleh database bertipe "[]byte"
+	// "PurchaseStatus(...)" type conversion mengubah data mentah menjadi tipe "PurchaseStatus"
+	// "*" digunakan untuk mengakses nilai asli yg ditujukan pointer tersebut "p"
+	// arti code ini perintah simpan hasil konversi tersebut ke dalam variabel asli
+	// "PurchaseStatus" yg memanggil fungsi "Scan()"
 	return nil
 }
 
 func (p PurchaseStatus) Value() (driver.Value, error) {
+	// "(p PurchaseStatus)" kita membuat begini karena kita ingin Go membuat salinan
+	// "PurchaseStatus" saat fungsi "Scan(...)" dipanggil dan segala perubahan yg dilakukan
+	// hanya terjadi di salinan nya saja di fungsi "Value"
 	return string(p), nil
+	// jika berhasil maka menampilkan perubahan "p" dalam bentuk tipe data "string"
 }
 
-// penjelasan fungsi "Scan()" dan "Value()" sama dengan penjelasan pada
-// package "models" file "user.go"
+// PERBEDAAN FUNGSI "Scan(value any)" DAN "Value()"
+// Fungsi "Scan (value any)" digunakan saat kita ingin membaca data dari database dan
+// memasukkannya kembali ke dalam tipe data kustom Go
+// Fungsi "Value()" digunakan untuk konversi data kustom Go menjadi tipe data yg bisa
+// disimpan dan dipahami oleh driver database
