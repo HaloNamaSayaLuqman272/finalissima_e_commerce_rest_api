@@ -158,8 +158,17 @@ func VerifyToken(next echo.HandlerFunc) echo.HandlerFunc {
 		// immutable, tidak bisa diubah setelah dibuat
 		// "c.Request().Context()" adalah request lama
 		c.SetRequest(c.Request().WithContext(ctx))
+		// code ini adalah perintah untuk mengganti context request lama menjadi
+		// context request baru
+		// "c.Request()" ambil request saat ini, ingat ini masih membawa context lama di dalam nya
+		// ".WithContext(...)" method dari "*http.Request" yg bertugas membuat salinan objek
+		// request baru, isinya masih sama seperti request lama, tpi context di dalamnya
+		// diganti dengan variabel context baru "ctx"
+		// "c.SetRequest(...)" adalah objek baru request
 
 		userData, err := GetUser(ctx)
+		// "GetUser(ctx)" melakukan peninjauan ulang terhadap proses "ctx" memastikan
+		// datanya bertipe "*jwt.Token"
 		if userData == nil || err != nil {
 			return c.JSON(http.StatusUnauthorized, map[string]string{
 				"message": "invalid token",
@@ -167,6 +176,7 @@ func VerifyToken(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		c.Set("userData", userData)
+		// "c.Set(...)" perintah menyimpan data "userData"
 		return next(c)
 	}
 }
