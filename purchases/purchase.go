@@ -25,3 +25,14 @@ type Purchase struct {
 	CreatedAt  time.Time             `json:"created_at"`
 	DeletedAt  *gorm.DB              `json:"deleted_at" gorm:"index"`
 }
+
+type PurchaseRequest struct {
+	Products []uint `json:"products" validate:"required"`
+	Courier  string `json:"courier" validate:"required,validCourier"`
+	UserID   uint
+	Fee      float64
+}
+
+type UpdatePurchaseRequest struct {
+	Status string `json:"status" validate:"required"`
+}

@@ -119,15 +119,44 @@ func GetUserID(ctx context.Context) (int, error) {
 }
 
 func VerifyToken(next echo.HandlerFunc) echo.HandlerFunc {
+	// "next echo.HandlerFunc" adalah represintasi dari langkah selanjutnya
+	// dalam rantai pemrosesan request
+	// contoh penggunaan nya seperti "return next(c)" memiliki arti teruskan handler request ini
+	// ke middleware/ handler selanjutnya
 	return func(c *echo.Context) error {
 		user := c.Get("user").(*jwt.Token)
+		// "c" adalah objek context request Echo
+		// ".Get(...)" adalah method bawaan "Echo" untuk mengambil data yg tersimpan di dalam
+		// context request berdasarkan key
+		// "user" adalah key yg dipakai untuk mencari data yg tersimpan
+		// "c.Get("user")" ini akan mengembalikan hasil yg bernilai "any" sehingga
+		// perlu dipaksa untuk menjadi tipe "*jwt.Token" agar Go mengenali
+		// seandainya ".(*jwt.Token)" tidak dipanggil maka akan terjadi gagal compile
+		// karena bertipe "any" dan Go tidak mengenali nya isi didalam nya apa
+		// kemudian proses ini disimpan dalam variabel "user"
 		if user == nil {
+			// "user == nil" adalah memeriksa apakah variabel "user" tidak memiliki
+			// nilai atau kosong
 			return c.JSON(http.StatusUnauthorized, map[string]string{
+				// "map[string]string" adalah tipe data untuk membuat struktur data JSON
+				// response yg akan dikrim kembali ke user
 				"message": "invalid token",
 			})
 		}
 
 		ctx := context.WithValue(c.Request().Context(), userContextKey, user)
+		// ".Request()" method yg mengembalikan objek HTTP request asli yg sedang diproses
+		// ".Context()" mengambil context yg sudah menempel pada request
+		// "userContextKey" adalah key, ini akan dipakai untuk menandai data yg akan disimpan
+		// "user" value yg akan disimpan
+		// arti code ini ambil context bawaan dari request yg sedang berjalan, kemuduan buat
+		// context baru yg isinya sama seperti context sebelumnya, dan tambah satu data baru
+		// "user" dan simpan dengan key "userContextKey", lalu simpan context baru ini
+		// di variabel "ctx"
+		// ada alasan kenapa kita harus membungkus context baru ke dalam context sebelumnya
+		// dan melanjutkannya karena dalam Go ada konsep "context.Context" itu bersifat
+		// immutable, tidak bisa diubah setelah dibuat
+		// "c.Request().Context()" adalah request lama
 		c.SetRequest(c.Request().WithContext(ctx))
 
 		userData, err := GetUser(ctx)
