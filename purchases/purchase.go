@@ -23,15 +23,17 @@ type Purchase struct {
 	Status            models.PurchaseStatus `json:"status"`
 	EstimatedDelivery string                `json:"estmated_delivery"`
 	CreatedAt         time.Time             `json:"created_at"`
+	UpdatedAt         *time.Time            `json:"updated_at"`
 	ReceivedAt        *time.Time            `json:"received_at"`
 	DeletedAt         *gorm.DB              `json:"deleted_at" gorm:"index"`
 }
 
 type PurchaseRequest struct {
-	Products []uint `json:"products" validate:"required"`
-	Courier  string `json:"courier" validate:"required,validCourier"`
-	UserID   uint
-	Fee      float64
+	Products     []uint `json:"products" validate:"required"`
+	Courier      string `json:"courier" validate:"required,validCourier"`
+	UserID       uint
+	Fee          float64
+	ReceivedTime *time.Time
 }
 
 type UpdatePurchaseRequest struct {
