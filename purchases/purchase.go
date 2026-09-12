@@ -17,7 +17,9 @@ type Purchase struct {
 	Product           products.Product      `json:"product"`
 	Price             float64               `json:"price"`
 	Quantity          uint                  `json:"quantity"`
+	Weight            uint                  `json:"weight"`
 	Amount            float64               `json:"amount"`
+	DestinationID     uint                  `json:"destination_id"`
 	Fee               float64               `json:"fee"`
 	Courier           string                `json:"courier"`
 	Status            models.PurchaseStatus `json:"status"`
@@ -29,11 +31,13 @@ type Purchase struct {
 }
 
 type PurchaseRequest struct {
-	Products     []uint `json:"products" validate:"required"`
-	Courier      string `json:"courier" validate:"required,validCourier"`
-	UserID       uint
-	Fee          float64
-	ReceivedTime *time.Time
+	Products      []uint `json:"products" validate:"required"`
+	Courier       string `json:"courier" validate:"required,validCourier"`
+	DestinationID uint   `json:"destination_id" validate:"required"`
+	Weight        uint   `json:"weight" validate:"required,min=1"`
+	UserID        uint
+	Fee           float64
+	ReceivedTime  *time.Time
 }
 
 type UpdatePurchaseRequest struct {

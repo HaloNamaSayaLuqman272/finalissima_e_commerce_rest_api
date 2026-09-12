@@ -8,20 +8,23 @@ import (
 )
 
 type Purchase struct {
-	ID         uint           `json:"id" gorm:"primaryKey"`
-	UserID     uint           `json:"user_id"`
-	User       User           `json:"user"`
-	ProductID  uint           `json:"product_id"`
-	Product    Product        `json:"product"`
-	Price      float64        `json:"price"`
-	Quantity   uint           `json:"quantity"`
-	Amount     float64        `json:"amount"`
-	Fee        float64        `json:"fee"`
-	Courier    string         `json:"courier"`
-	Status     PurchaseStatus `json:"status"`
-	ReceivedAt time.Time      `json:"received_at"`
-	CreatedAt  time.Time      `json:"created_at"`
-	DeletedAt  *gorm.DB       `json:"deleted_at" gorm:"index"`
+	ID            uint           `json:"id" gorm:"primaryKey"`
+	UserID        uint           `json:"user_id"`
+	User          User           `json:"user"`
+	ProductID     uint           `json:"product_id"`
+	Product       Product        `json:"product"`
+	Price         float64        `json:"price"`
+	Quantity      uint           `json:"quantity"`
+	Weight        uint           `json:"weight"`
+	Amount        float64        `json:"amount"`
+	DestinationID uint           `json:"destination_id"`
+	Fee           float64        `json:"fee"`
+	Courier       string         `json:"courier"`
+	Status        PurchaseStatus `json:"status"`
+	ReceivedAt    *time.Time     `json:"received_at"`
+	CreatedAt     time.Time      `json:"created_at"`
+	UpdatedAt     *time.Time     `json:"updated_at"`
+	DeletedAt     *gorm.DB       `json:"deleted_at" gorm:"index"`
 }
 
 type PurchaseStatus string
