@@ -1,11 +1,13 @@
 package main
 
 import (
+	"finalissima_e_commerce_rest_api/api"
 	"finalissima_e_commerce_rest_api/api/middlewares"
 	"finalissima_e_commerce_rest_api/database/drivers"
 	"finalissima_e_commerce_rest_api/package/constant"
 	"finalissima_e_commerce_rest_api/package/fileupload"
 	"finalissima_e_commerce_rest_api/package/utils"
+	"fmt"
 	"log"
 	"strconv"
 )
@@ -22,7 +24,7 @@ func main() {
 		Port:     utils.GetConfigurance(constant.DB_PORT),
 	}
 
-	cloudinaryConfig := fileupload.CloudinaryConfig{
+	cloudinaryConfig := fileupload.CludinaryConfig{
 		CloudinaryURL: utils.GetConfigurance(constant.CLOUDINARY_URL),
 	}
 
@@ -39,6 +41,13 @@ func main() {
 	var (
 		repository = dbConfig.InitDB()
 		cloudinary = cloudinaryConfig.InitCloudinary()
-		e = 
+		e          = api.NewEcho(repository, cloudinary, jwtConfig)
 	)
+
+	drivers.MigrateDB(repository)
+
+	appPort := fmt.Sprintf("%s", utils.GetConfigurance(constant.PORT))
+	if err := e.Start(appPort); err != nil {
+		e.Logger.Error("failed to start server", "error", err)
+	}
 }

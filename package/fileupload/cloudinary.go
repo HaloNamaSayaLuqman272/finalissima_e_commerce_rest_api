@@ -4,16 +4,16 @@ import (
 	"context"
 	"log"
 
-	"github.com/cloudinary/cloudinary-go"
-	"github.com/cloudinary/cloudinary-go/api/uploader"
+	"github.com/cloudinary/cloudinary-go/v2"
+	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 )
 
-type CloudinaryConfig struct {
+type CludinaryConfig struct {
 	CloudinaryURL string
 }
 
 type Uploader interface {
-	UploadFile(ctx context.Context, file any) (string, error)
+	Uploadfile(ctx context.Context, file any) (string, error)
 }
 
 type CloudinaryUploader struct {
@@ -22,15 +22,10 @@ type CloudinaryUploader struct {
 	Options uploader.UploadParams
 }
 
-func (c *CloudinaryConfig) InitCloudinary() *cloudinary.Cloudinary {
-	// kita disini tidak menambahkan parameter input
-	// karena memang tidak dibutuhkan untuk keadaan fungsi ini
-	// fungsi ini kita hanya untuk meng-koneksikan aplikasi Go ini
-	// ke API Cloudinary
+func (c *CludinaryConfig) InitCloudinary() *cloudinary.Cloudinary {
 	cld, err := cloudinary.NewFromURL(c.CloudinaryURL)
-	//code ini adalah baris untuk membuat koneksi ke layanan Cloudinary
 	if err != nil {
-		log.Fatalf("error when connceting to the cloudinary: %s\n", err)
+		log.Fatalf("error when connecting to the cloudinary: %s\n", err)
 	}
 
 	log.Println("cloudinary initialization succed")
@@ -38,7 +33,6 @@ func (c *CloudinaryConfig) InitCloudinary() *cloudinary.Cloudinary {
 }
 
 func (c *CloudinaryUploader) UploadFile(ctx context.Context, file any) (string, error) {
-	// code ini untuk kebutuhan upload file ke Cloudinary
 	resp, err := c.Cld.Upload.Upload(ctx, file, c.Options)
 	if err != nil {
 		return "", err
