@@ -2,6 +2,8 @@ package constant
 
 const PORT = "DB_PORT"
 
+const API_V1_PREFIX = "/api/v1"
+
 const (
 	DB_HOST     = "DB_HOST"
 	DB_PORT     = "DB_PORT"
