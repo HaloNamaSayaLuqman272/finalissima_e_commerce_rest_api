@@ -84,7 +84,7 @@ func (u Users) UpdateProfile(ctx *echo.Context) error {
 		})
 	}
 
-	fileLink, err := u.uploader.UploadFile(ctx.Request().Context(), file)
+	fileLink, err := u.uploader.Uploadfile(ctx.Request().Context(), file)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, dtos.Response[any]{
 			Status:  "failed",
