@@ -47,7 +47,7 @@ func main() {
 	drivers.MigrateDB(repository)
 
 	appPort := fmt.Sprintf("%s", utils.GetConfigurance(constant.PORT))
-	if err := e.Start(appPort); err != nil {
+	if err := e.Start(":" + appPort); err != nil {
 		e.Logger.Error("failed to start server", "error", err)
 	}
 }
