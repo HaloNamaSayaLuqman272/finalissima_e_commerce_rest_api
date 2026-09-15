@@ -61,5 +61,7 @@ func NewEcho(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewa
 	categoryRoutes.PUT("/categories/:id", categoriesHandler.UpdateCategory, middlewares.VerifyAdmin, middlewares.ValidateBody(&categories.CategoryRequest{}))
 	categoryRoutes.DELETE("/categories/:id", categoriesHandler.DeleteCategoryByID, middlewares.VerifyAdmin)
 
+	productRoutes := e.Group(constant.API_V1_PREFIX, echojwt.WithConfig(jwtMiddleware), middlewares.VerifyToken)
+	productRoutes.POST("/products")
 	return e
 }
