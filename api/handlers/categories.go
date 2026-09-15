@@ -15,7 +15,7 @@ type Categories struct {
 }
 
 func (c Categories) CreateCategory(ctx *echo.Context) error {
-	categoryReq := ctx.Get("validateBody").(*categories.CategoryRequest)
+	categoryReq := ctx.Get("validatedBody").(*categories.CategoryRequest)
 	category, err := c.categories.CreateCategory(ctx.Request().Context(), categoryReq)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, dtos.Response[any]{
@@ -25,7 +25,7 @@ func (c Categories) CreateCategory(ctx *echo.Context) error {
 	}
 
 	return ctx.JSON(http.StatusOK, dtos.Response[categories.Category]{
-		Status:  "failed",
+		Status:  "success",
 		Message: "category created",
 		Data:    category,
 	})
@@ -50,7 +50,7 @@ func (c Categories) GetByID(ctx *echo.Context) error {
 	}
 
 	return ctx.JSON(http.StatusOK, dtos.Response[categories.Category]{
-		Status:  "failed",
+		Status:  "success",
 		Message: "category found",
 		Data:    category,
 	})
