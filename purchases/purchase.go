@@ -30,7 +30,7 @@ type Purchase struct {
 	DeletedAt         *gorm.DB              `json:"deleted_at" gorm:"index"`
 }
 
-type PurchaseRequest struct {
+type PurchaseOrder struct {
 	Products      []uint `json:"products" validate:"required"`
 	Courier       string `json:"courier" validate:"required,validCourier"`
 	DestinationID uint   `json:"destination_id" validate:"required"`
