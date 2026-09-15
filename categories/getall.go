@@ -24,6 +24,13 @@ func (g getall) GetAllCategories(ctx context.Context, pagination utils.Paginatio
 	// "[]Category{}" adalah slice of Category{} yg rencana nya
 	// akan menjadi tempat menampung banyak kategori, saat ini masih kosongan
 	// dan "[]Category{}" akan dibungkus variabel "categories"
+	allowedColumns := map[string]bool{
+		"name_category": true,
+		"descrption":    true,
+	}
+	if !allowedColumns[pagination.Keyword] {
+		pagination.Keyword = "name_category"
+	}
 
 	if err := g.repository.WithContext(ctx).Scopes(utils.Paginate(&categories, &pagination, g.repository)).Find(&categories).Error; err != nil {
 		// selanjutnya kita membuat alur "GetAllCategory", kita mengnginkan

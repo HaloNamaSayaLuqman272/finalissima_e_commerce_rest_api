@@ -67,7 +67,7 @@ func (c Categories) GetAllCategories(ctx *echo.Context) error {
 		Limit:   limit,
 		Sort:    sort,
 		Search:  search,
-		Keyword: "name",
+		Keyword: "name_category",
 	}
 	categoriesData, err := c.categories.GetAllCategories(ctx.Request().Context(), pagination)
 	if err != nil {
@@ -94,7 +94,7 @@ func (c Categories) UpdateCategory(ctx *echo.Context) error {
 		})
 	}
 
-	categoryReq := ctx.Get("validateBody").(*categories.CategoryRequest)
+	categoryReq := ctx.Get("validatedBody").(*categories.CategoryRequest)
 	category, err := c.categories.UpdateCategory(ctx.Request().Context(), categoryReq, uint(id))
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, dtos.Response[any]{
