@@ -37,6 +37,7 @@ func (r register) RegisterUser(ctx context.Context, registerRequest *RegisterReq
 	}
 
 	record := new(User)
+
 	if err := result.WithContext(ctx).Last(record).Error; err != nil {
 		// ini adalah proses data user baru disimpan ke dalam database
 		return User{}, err

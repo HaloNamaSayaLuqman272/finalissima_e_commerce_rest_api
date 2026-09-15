@@ -45,7 +45,7 @@ type User struct {
 	CityID         uint           `json:"city_id"`
 	DistrictID     uint           `json:"district_id"`
 	ProfilePicture string         `json:"profile_picture"`
-	Role           Role           `json:"role"`
+	Role           Role           `json:"role" gorm:"type:role"`
 	CreatedAt      time.Time      `json:"created_at"`
 	UpdatedAt      time.Time      `json:"updated_at"`
 	DeletedAt      gorm.DeletedAt `json:"deleted_at" gorm:"index"`
