@@ -5,7 +5,10 @@ import (
 	"finalissima_e_commerce_rest_api/api/middlewares"
 	"finalissima_e_commerce_rest_api/auth"
 	"finalissima_e_commerce_rest_api/categories"
+	"finalissima_e_commerce_rest_api/package/ai"
 	"finalissima_e_commerce_rest_api/package/constant"
+	"finalissima_e_commerce_rest_api/package/fileupload"
+	"finalissima_e_commerce_rest_api/products"
 	"fmt"
 
 	"github.com/cloudinary/cloudinary-go/v2"
@@ -21,8 +24,12 @@ func NewEcho(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewa
 		e                 = echo.New()
 		authService       = auth.New(repository)
 		categoryService   = categories.New(repository)
+		productService    = products.New(repository)
+		aiSeervice        = ai.InitService()
+		uploader          = &fileupload.CloudinaryUploader{Cld: cld}
 		authHandler       = handlers.NewAuth(authService, jwtConfig)
 		categoriesHandler = handlers.NewCategories(categoryService)
+		productsHandler   = handlers.NewProducts(productService, uploader, aiSeervice)
 	)
 
 	e.Validator = &middlewares.CustomValidator{
@@ -62,6 +69,7 @@ func NewEcho(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewa
 	categoryRoutes.DELETE("/categories/:id", categoriesHandler.DeleteCategoryByID, middlewares.VerifyAdmin)
 
 	productRoutes := e.Group(constant.API_V1_PREFIX, echojwt.WithConfig(jwtMiddleware), middlewares.VerifyToken)
-	productRoutes.POST("/products")
+
+	productRoutes.POST("/products", productsHandler.CreateProduct, middlewares.VerifyAdmin, middlewares.ValidateBody(&products.Product{}))
 	return e
 }

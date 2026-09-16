@@ -1,6 +1,8 @@
 package ai
 
-import "finalissima_e_commerce_rest_api/categories"
+import (
+	"finalissima_e_commerce_rest_api/categories"
+)
 
 type ProductRecommendationRequest struct {
 	Quantity uint   `json:"quantity" validate:"required,min=1"`
@@ -8,7 +10,7 @@ type ProductRecommendationRequest struct {
 }
 
 type ProductRecommendationResponse struct {
-	Number      int                 `json:"number"`
+	ID          uint                `json:"product_id"`
 	NameProduct string              `json:"name_product"`
 	Category    categories.Category `json:"category"`
 	Description string              `json:"description"`

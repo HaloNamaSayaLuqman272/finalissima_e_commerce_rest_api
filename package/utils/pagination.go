@@ -217,3 +217,5 @@ func PaginateByProductCategory(value any, pagination *Pagination, categoryId uin
 		// hanyalah produk dari kategori "Halal Food"
 	}
 }
+
+func PaginateByProductRecommendation(value any, pagination *Pagination)
