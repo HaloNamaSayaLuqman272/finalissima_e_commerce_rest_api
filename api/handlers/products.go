@@ -248,7 +248,7 @@ func (p Products) DeleteProduct(ctx *echo.Context) error {
 		})
 	}
 
-	err = p.products.DeleteProduct(ctx.Request().Context(), uint(id))
+	err = p.products.DeleteProductByID(ctx.Request().Context(), uint(id))
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, dtos.Response[any]{
 			Status:  "failed",

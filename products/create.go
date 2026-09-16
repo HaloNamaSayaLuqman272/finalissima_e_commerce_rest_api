@@ -21,6 +21,7 @@ func (c create) CreateProduct(ctx context.Context, createProductRequest *Product
 		Weight:      createProductRequest.Weight,
 		ExpiredDate: createProductRequest.ExpiredDate,
 		Price:       createProductRequest.Price,
+		Stock:       createProductRequest.Stock,
 		ImageLink:   createProductRequest.ImageLink,
 		// bagian ini adalah bagian daftar data yg perlu user isi
 		// dan struktur model data ini akan dibungkus di variabel "product"
@@ -44,7 +45,7 @@ func (c create) CreateProduct(ctx context.Context, createProductRequest *Product
 	// ingat, variabel "record" ini berisi baris-baris data "Product" yg
 	// aslinya masih kosong dan akan terisi pada pemanggilan "record"
 	// di ".Last(record)"
-	if err := result.WithContext(ctx).Last(record).Error; err != nil {
+	if err := result.WithContext(ctx).Preload("Category").Last(record).Error; err != nil {
 		// code ini adalah proses pengambilan data terakhir "create product"
 		// dan dimasukkan ke dalam variabel "record"
 		return Product{}, err

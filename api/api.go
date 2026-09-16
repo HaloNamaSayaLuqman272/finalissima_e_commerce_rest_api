@@ -70,11 +70,12 @@ func NewEcho(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewa
 
 	productRoutes := e.Group(constant.API_V1_PREFIX, echojwt.WithConfig(jwtMiddleware), middlewares.VerifyToken)
 
-	productRoutes.POST("/product", productsHandler.CreateProduct, middlewares.VerifyAdmin, middlewares.ValidateBody(&products.Product{}))
-	productRoutes.GET("/product/:id", productsHandler.GetProductByID)
+	productRoutes.POST("/products", productsHandler.CreateProduct, middlewares.VerifyAdmin, middlewares.ValidateBody(&products.ProductRequest{}))
+	productRoutes.GET("/products/:id", productsHandler.GetProductByID)
 	productRoutes.GET("/products/category/:id", productsHandler.GetProductsByCategory)
 	productRoutes.GET("/products", productsHandler.GetAllProducts)
-	productRoutes.PUT("/product/:id", productsHandler.UpdateProduct, middlewares.VerifyAdmin, middlewares.ValidateBody(&products.ProductRequest{}))
+	productRoutes.PUT("/products/:id", productsHandler.UpdateProduct, middlewares.VerifyAdmin, middlewares.ValidateBody(&products.ProductRequest{}))
+	productRoutes.DELETE("/products/:id", productsHandler.DeleteProduct, middlewares.VerifyAdmin)
 
 	return e
 }

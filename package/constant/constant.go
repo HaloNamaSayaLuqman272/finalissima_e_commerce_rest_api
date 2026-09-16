@@ -39,4 +39,5 @@ var ALLOWED_EXTENSIONS map[string]bool = map[string]bool{
 	".png":  true,
 	".jpg":  true,
 	".jpeg": true,
+	".webp": true,
 }
