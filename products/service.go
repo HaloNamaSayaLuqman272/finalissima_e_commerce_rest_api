@@ -13,7 +13,7 @@ type Service interface {
 	GetProductByCategory(ctx context.Context, pagination utils.Pagination, categoryId uint) (utils.Pagination, error)
 	GetAllProducts(ctx context.Context, pagination utils.Pagination) (utils.Pagination, error)
 	UpdateProduct(ctx context.Context, updateProductRequest *ProductRequest, id uint) (Product, error)
-	DeleteProduct(ctx context.Context, id uint) error
+	DeleteProductByID(ctx context.Context, id uint) error
 }
 
 type service struct {

@@ -11,7 +11,7 @@ type delete struct {
 	getbyid
 }
 
-func (d delete) DeleteProduct(ctx context.Context, id uint) error {
+func (d delete) DeleteProductByID(ctx context.Context, id uint) error {
 	product, err := d.GetProductByID(ctx, id)
 	if err != nil {
 		return err
