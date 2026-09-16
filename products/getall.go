@@ -12,7 +12,7 @@ type getall struct {
 	repository *gorm.DB
 }
 
-func (g getall) GetAllProduct(ctx context.Context, pagination utils.Pagination) (utils.Pagination, error) {
+func (g getall) GetAllProducts(ctx context.Context, pagination utils.Pagination) (utils.Pagination, error) {
 	products := []Product{}
 
 	if err := g.repository.WithContext(ctx).Scopes(utils.Paginate(&products, &pagination, g.repository)).Preload(clause.Associations).Find(&products).Error; err != nil {

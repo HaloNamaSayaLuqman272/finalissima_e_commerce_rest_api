@@ -11,7 +11,7 @@ type Service interface {
 	CreateProduct(ctx context.Context, createProductRequest *ProductRequest) (Product, error)
 	GetProductByID(ctx context.Context, id uint) (Product, error)
 	GetProductByCategory(ctx context.Context, pagination utils.Pagination, categoryId uint) (utils.Pagination, error)
-	GetAllProduct(ctx context.Context, pagination utils.Pagination) (utils.Pagination, error)
+	GetAllProducts(ctx context.Context, pagination utils.Pagination) (utils.Pagination, error)
 	UpdateProduct(ctx context.Context, updateProductRequest *ProductRequest, id uint) (Product, error)
 	DeleteProduct(ctx context.Context, id uint) error
 }

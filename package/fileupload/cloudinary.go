@@ -13,7 +13,7 @@ type CludinaryConfig struct {
 }
 
 type Uploader interface {
-	Uploadfile(ctx context.Context, file any) (string, error)
+	UploadFile(ctx context.Context, file any) (string, error)
 }
 
 type CloudinaryUploader struct {
