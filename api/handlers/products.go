@@ -109,7 +109,7 @@ func (p Products) GetProductsByCategory(ctx *echo.Context) error {
 		Limit:   limit,
 		Sort:    sort,
 		Search:  search,
-		Keyword: "title",
+		Keyword: "name_product",
 	}
 	productsData, err := p.products.GetProductByCategory(ctx.Request().Context(), pagination, uint(categoryId))
 	if err != nil {
@@ -168,7 +168,7 @@ func (p Products) GetAllProducts(ctx *echo.Context) error {
 		Limit:   limit,
 		Sort:    sort,
 		Search:  search,
-		Keyword: "title",
+		Keyword: "name_product",
 	}
 
 	productsData, err := p.products.GetAllProducts(ctx.Request().Context(), pagination)
