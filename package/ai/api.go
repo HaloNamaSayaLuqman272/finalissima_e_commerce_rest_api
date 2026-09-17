@@ -5,6 +5,7 @@ import (
 	"finalissima_e_commerce_rest_api/package/clients"
 	"finalissima_e_commerce_rest_api/package/constant"
 	"finalissima_e_commerce_rest_api/package/utils"
+
 	"fmt"
 	"net/http"
 )
@@ -27,8 +28,8 @@ func InitService() Service {
 
 func (r *service) GetProductRecommendation(req ProductRecommendationRequest) (PromptResponse, error) {
 	var response PromptResponse
-	var model string = utils.GetConfigurance(constant.AI_MODEL)
-	var userPrompt string = fmt.Sprintf("Suggest TOP %v PRODUCT RECOMMENDATIONS about %v", req.Quantity, req.Topic)
+	model := utils.GetConfigurance(constant.AI_MODEL)
+	userPrompt := fmt.Sprintf("Suggest TOP %v PRODUCT RECOMMENDATIONS about %v", req.Quantity, req.Topic)
 
 	payload := map[string]any{
 		"model": model,

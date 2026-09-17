@@ -217,3 +217,8 @@ func PaginateByProductCategory(value any, pagination *Pagination, categoryId uin
 		// hanyalah produk dari kategori "Halal Food"
 	}
 }
+
+func PaginateByProductRecommendation(value any, pagination *Pagination, promptRequest, db *gorm.DB) func(db *gorm.DB) *gorm.DB {
+	var totalRows int64
+	whereRecommendationClause := ""
+}

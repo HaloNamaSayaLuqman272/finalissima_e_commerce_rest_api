@@ -14,7 +14,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"model\": \"google/gemma-4-31b-it:free\",\n    \"messages\": [\n        {\n            \"role\": \"system\",\n            \"content\": \"You are a professional administrator working with various products. Provide the recommendation based on the given requirements. You are only responsible for providing the product recommendations only. Provide recommendations with valid JSON only. Do not wrap the response in Markdown code fences with this structure `{number:product_number,name:product_name,description:product_description,category:category_id,company:product_company,barcode:product_barcode,weight:weight_product,price:product_price}`\"\n        },\n        {\n            \"role\": \"user\",\n            \"content\": \"Give me top 5 product recommendations for adult\"\n        }\n    ]\n}",
+          "raw": "{\n    \"model\": \"google/gemma-4-31b-it:free\",\n    \"messages\": [\n        {\n            \"role\": \"system\",\n            \"content\": \"You are a professional shopping assistant. You will be given a list of available products in JSON format, and user's request. Your task is to select the most relevant products from the GIVEN LIST ONLY - do not invent or suggest products that are not in the list. Respond ONLY with valid JSON, no markdown code fences, in this exact structure: `{id:product_id}`\"\n        },\n        {\n            \"role\": \"user\",\n            \"content\": \"Give me top 5 food product recommendations\"\n        }\n    ]\n}",
           "options": {
             "raw": {
               "language": "json"
