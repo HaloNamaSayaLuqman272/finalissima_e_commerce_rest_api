@@ -15,7 +15,7 @@ type Product struct {
 	Category    Category       `json:"category"`
 	Description string         `json:"description"`
 	Company     string         `json:"company"`
-	Barcode     string         `json:"barcode" gorm:"unique"`
+	Barcode     string         `json:"barcode"`
 	Weight      uint           `json:"weight"`
 	ExpiredDate string         `json:"expired_date"`
 	Price       float64        `json:"price"`

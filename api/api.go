@@ -73,6 +73,7 @@ func NewEcho(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewa
 	productRoutes.POST("/products", productsHandler.CreateProduct, middlewares.VerifyAdmin, middlewares.ValidateBody(&products.ProductRequest{}))
 	productRoutes.GET("/products/:id", productsHandler.GetProductByID)
 	productRoutes.GET("/products/category/:id", productsHandler.GetProductsByCategory)
+	productRoutes.POST("/products/recommendation", productsHandler.GetProductRecommendation, middlewares.ValidateBody(&ai.ProductRecommendationRequest{}))
 	productRoutes.GET("/products", productsHandler.GetAllProducts)
 	productRoutes.PUT("/products/:id", productsHandler.UpdateProduct, middlewares.VerifyAdmin, middlewares.ValidateBody(&products.ProductRequest{}))
 	productRoutes.DELETE("/products/:id", productsHandler.DeleteProduct, middlewares.VerifyAdmin)

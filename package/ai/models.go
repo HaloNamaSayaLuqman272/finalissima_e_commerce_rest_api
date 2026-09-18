@@ -1,12 +1,21 @@
 package ai
 
 type ProductRecommendationRequest struct {
-	Quantity uint   `json:"quantity" validate:"required,min=1"`
-	Topic    string `json:"topic" validate:"required"`
+	Quantity uint      `json:"quantity" validate:"required,min=1"`
+	Topic    string    `json:"topic" validate:"required"`
+	Products []Product `json:"-"`
+}
+
+type Product struct {
+	ID          uint    `json:"id"`
+	NameProduct string  `json:"name_product"`
+	Description string  `json:"description"`
+	CategoryID  uint    `json:"category_id"`
+	Price       float64 `json:"price"`
 }
 
 type ProductRecommendationResponse struct {
-	ID          uint    `json:"product_id"`
+	ID          uint    `json:"id"`
 	NameProduct string  `json:"name_product"`
 	CategoryID  uint    `json:"category_id"`
 	Description string  `json:"description"`

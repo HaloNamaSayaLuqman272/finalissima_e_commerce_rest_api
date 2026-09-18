@@ -203,10 +203,7 @@ func PaginateByProductCategory(value any, pagination *Pagination, categoryId uin
 		whereClause := fmt.Sprintf("%v LIKE ?", pagination.Keyword)
 
 		return db.Offset(pagination.GetOffset()).
-			Limit(pagination.GetLimit()).
-			Order(pagination.GetSort()).
-			Where(whereClause, pagination.GetSearch()+"%").
-			Where(whereCategoryClause, categoryId)
+			Limit(pagination.GetLimit()).Order(pagination.GetSort()).Where(whereClause, pagination.GetSearch()+"%").Where(whereCategoryClause, categoryId)
 		// kita menambahkan secara spesifik ".Where(whereCategoryClause, ...)"
 		// karena pada kondisi ini, kita ingin Go memproses dan menampilkan
 		// pagination secara khusus
@@ -216,9 +213,4 @@ func PaginateByProductCategory(value any, pagination *Pagination, categoryId uin
 		// seperti misalnya kategori produk "Halal Food" maka yg akan ditampilkan
 		// hanyalah produk dari kategori "Halal Food"
 	}
-}
-
-func PaginateByProductRecommendation(value any, pagination *Pagination, promptRequest, db *gorm.DB) func(db *gorm.DB) *gorm.DB {
-	var totalRows int64
-	whereRecommendationClause := ""
 }

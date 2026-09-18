@@ -29,11 +29,16 @@ func InitService() Service {
 func (r *service) GetProductRecommendation(req ProductRecommendationRequest) (PromptResponse, error) {
 	var response PromptResponse
 	model := utils.GetConfigurance(constant.AI_MODEL)
-	userPrompt := fmt.Sprintf("Suggest TOP %v PRODUCT RECOMMENDATIONS about %v", req.Quantity, req.Topic)
+
+	productJSON, _ := json.Marshal(req.Products)
+	userPrompt := fmt.Sprintf(
+		"Available products (JSON list): %s\n\nBased ONLY on this list, suggest TOP %v products matching: %v. Respond with a JSON array of the chosen product's \"id\" only, e.g. [{\"id\":1},{\"id\":2}]",
+		string(productJSON), req.Quantity, req.Topic,
+	)
 
 	payload := map[string]any{
 		"model": model,
-		"message": []Message{
+		"messages": []Message{
 			{
 				Role:    "system",
 				Content: SYSTEM_PROMPT,
