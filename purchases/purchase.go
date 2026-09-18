@@ -39,6 +39,6 @@ type PurchaseOrder struct {
 	ReceivedTime  *time.Time
 }
 
-type UpdatePurchaseRequest struct {
+type UpdatePurchaseOrder struct {
 	Status string `json:"status" validate:"required"`
 }
