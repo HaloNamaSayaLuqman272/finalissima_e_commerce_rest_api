@@ -21,16 +21,29 @@
 ## 🖥️ How to Use
     - 📱 Create a custom type in database.
         -- create role type
+
+        ```sh
         CREATE TYPE role AS ENUM ('user', 'admin');
+        ```
 
         -- create purchase status type
+
+        ```sh
         CREATE TYPE purchase_status AS ENUM (
             'pending', 'paid', 'on_delivery', 'cancelled', 'received'
         );
+        ```
     - 📲 Generate admmin by code and .env
+
+        ```sh
         go run ./cmd/generate/.
+        ```
+
     - 💻 Run the application
+        
+        ```sh
         go run ./cmd/api/.
+        ```
 
 ## 📑 Additional Notes
     📄 The docs directory contains Postman collection examples including:
