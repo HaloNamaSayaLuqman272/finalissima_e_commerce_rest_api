@@ -15,9 +15,8 @@ type Purchase struct {
 	User              user.User             `json:"user"`
 	ProductID         uint                  `json:"product_id"`
 	Product           products.Product      `json:"product"`
-	Price             float64               `json:"price"`
 	Quantity          uint                  `json:"quantity"`
-	Weight            uint                  `json:"weight"`
+	TotalWeight       uint                  `json:"total_weight"`
 	Amount            float64               `json:"amount"`
 	DestinationID     uint                  `json:"destination_id"`
 	Fee               float64               `json:"fee"`
