@@ -44,5 +44,5 @@ go run ./cmd/api/.
 
 ## 📑 Additional Notes
 📄 The docs directory contains Postman collection examples including:
-    -  OpenRouter Playground: Sample request of OpenRouter API
-    -  RajaOngkir Playground: Sample request of RajaOngkir API
+-  OpenRouter Playground: Sample request of OpenRouter API
+-  RajaOngkir Playground: Sample request of RajaOngkir API
