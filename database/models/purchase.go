@@ -20,6 +20,7 @@ type Purchase struct {
 	Fee           float64        `json:"fee"`
 	Courier       string         `json:"courier"`
 	Status        PurchaseStatus `json:"status"`
+	PaidAt        time.Time      `json:"paid_at"`
 	ReceivedAt    *time.Time     `json:"received_at"`
 	CreatedAt     time.Time      `json:"created_at"`
 	UpdatedAt     *time.Time     `json:"updated_at"`
