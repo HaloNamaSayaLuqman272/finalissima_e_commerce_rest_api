@@ -11,6 +11,11 @@ type getallpurchase struct {
 	repository *gorm.DB
 }
 
-func (g getallpurchase) GetAllPurchase(ctx context.Context, pagination utils.Pagination) (utils.Pagination, error) {
+func (g getallpurchase) GetAllPurchase(ctx context.Context, pagination utils.Pagination) ([]Purchase, error) {
 	purchases := []Purchase{}
+	if err := g.repository.WithContext(ctx).Scopes(utils.Paginate(&purchases, &pagination, g.repository)).Preload("User").Preload("Product").Preload("Product.Category").Find(&purchases).Error; err != nil {
+		return nil, err
+	}
+
+	return purchases, nil
 }
