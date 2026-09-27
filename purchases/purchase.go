@@ -21,11 +21,14 @@ type Purchase struct {
 	Fee               float64               `json:"fee"`
 	Courier           string                `json:"courier"`
 	Status            models.PurchaseStatus `json:"status"`
-	EstimatedDelivery string                `json:"estmated_delivery"`
+	PaidAt            time.Time             `json:"paid_at"`
+	EstimatedDelivery string                `json:"estimated_delivery"`
+	TrackingNumber    string                `json:"tracking_number"`
+	ShippedAt         *time.Time            `json:"shipped_at"`
 	CreatedAt         time.Time             `json:"created_at"`
 	UpdatedAt         *time.Time            `json:"updated_at"`
 	ReceivedAt        *time.Time            `json:"received_at"`
-	DeletedAt         *gorm.DB              `json:"deleted_at" gorm:"index"`
+	DeletedAt         gorm.DeletedAt        `json:"deleted_at" gorm:"index"`
 }
 
 type PurchaseOrder struct {
