@@ -3,7 +3,6 @@ package purchases
 import (
 	"finalissima_e_commerce_rest_api/database/models"
 	"finalissima_e_commerce_rest_api/products"
-	"os/user"
 	"time"
 
 	"gorm.io/gorm"
@@ -12,7 +11,7 @@ import (
 type Purchase struct {
 	ID                uint                  `json:"id" gorm:"primaryKey"`
 	UserID            uint                  `json:"user_id"`
-	User              user.User             `json:"user"`
+	User              models.User           `json:"user"`
 	ProductID         uint                  `json:"product_id"`
 	Product           products.Product      `json:"product"`
 	Quantity          uint                  `json:"quantity"`
