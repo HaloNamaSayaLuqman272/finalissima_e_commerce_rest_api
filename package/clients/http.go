@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -23,6 +24,12 @@ type HTTPClient struct {
 	// "Endpoint" jalur spesifik dari API yg akan dipanggil, seperti BaseURL/v1/charge
 	Method string
 	// "Method" metode HTTP yg digunakan, seperti "GET", "PUT", dst
+}
+
+func buildURL(base, endpoint string) string {
+	base = strings.TrimSuffix(base, "/")
+	endpoint = strings.TrimPrefix(endpoint, "/")
+	return base + "/" + endpoint
 }
 
 func InitHTTPClient(baseUrl string, timeout int, apiKey string) HTTPClient {
@@ -66,7 +73,7 @@ func (h *HTTPClient) SendJSON(endpoint, method string, payload map[string]any) (
 		// dibungkus memakai variabel "requestPayload"
 	}
 
-	req, err := http.NewRequest(method, h.BaseURL+endpoint, requestPayload)
+	req, err := http.NewRequest(method, buildURL(h.BaseURL, endpoint), requestPayload)
 	// ini adalah bentuk HTTP yg direncanakan
 	if err != nil {
 		return "", err
@@ -145,7 +152,7 @@ func (h *HTTPClient) SendFormEncoded(endpoint, method string, payload map[string
 		// lalu bungkus string itu ke dalam "bytes.Buffer"
 	}
 
-	req, err := http.NewRequest(method, h.BaseURL+endpoint, requestPayload)
+	req, err := http.NewRequest(method, buildURL(h.BaseURL, endpoint), requestPayload)
 	// code ini bermaksud sebagai langkah membangun objek request HTTP yg
 	// lengkap, namun bagian ini request belum terkirim
 	if err != nil {

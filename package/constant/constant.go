@@ -29,10 +29,11 @@ const (
 )
 
 const (
-	CLOUDINARY_URL     = "CLOUDINARY_URL"
-	RAJAONGKIR_API_KEY = "RAJAONGKIR_API_KEY"
-	AI_API_KEY         = "AI_API_KEY"
-	AI_MODEL           = "AI_MODEL"
+	CLOUDINARY_URL          = "CLOUDINARY_URL"
+	RAJAONGKIR_API_KEY      = "RAJAONGKIR_API_KEY"
+	SHOP_ORIGIN_DISTRICT_ID = "SHOP_ORIGIN_DISTRICT_ID"
+	AI_API_KEY              = "AI_API_KEY"
+	AI_MODEL                = "AI_MODEL"
 )
 
 var ALLOWED_EXTENSIONS map[string]bool = map[string]bool{

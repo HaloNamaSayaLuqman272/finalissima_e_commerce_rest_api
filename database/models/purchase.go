@@ -7,27 +7,36 @@ import (
 	"gorm.io/gorm"
 )
 
+type PurchaseItem struct {
+	ID         uint    `json:"id" gorm:"primaryKey"`
+	PurchaseID uint    `json:"purchase_id"`
+	ProductID  uint    `json:"product_id"`
+	Product    Product `json:"product"`
+	Quantity   uint    `json:"quantity"`
+	Weight     uint    `json:"weight"`
+	Price      float64 `json:"price"`
+}
+
 type Purchase struct {
-	ID                uint           `json:"id" gorm:"primaryKey"`
-	UserID            uint           `json:"user_id"`
-	User              User           `json:"user"`
-	ProductID         uint           `json:"product_id"`
-	Product           Product        `json:"product"`
-	Quantity          uint           `json:"quantity"`
-	TotalWeight       uint           `json:"total_weight"`
-	Amount            float64        `json:"amount"`
-	DestinationID     uint           `json:"destination_id"`
-	Fee               float64        `json:"fee"`
-	Courier           string         `json:"courier"`
-	Status            PurchaseStatus `json:"status"`
-	PaidAt            time.Time      `json:"paid_at"`
-	EstimatedDelivery string         `json:"estimated_delivery"`
-	TrackingNumber    string         `json:"tracking_number"`
-	ShippedAt         *time.Time     `json:"shipped_at"`
-	CreatedAt         time.Time      `json:"created_at"`
-	UpdatedAt         *time.Time     `json:"updated_at"`
-	ReceivedAt        *time.Time     `json:"received_at"`
-	DeletedAt         gorm.DeletedAt `json:"deleted_at" gorm:"index"`
+	ID                  uint           `json:"id" gorm:"primaryKey"`
+	UserID              uint           `json:"user_id"`
+	User                User           `json:"user"`
+	Items               []PurchaseItem `json:"items" gorm:"foreignKey:PurchaseID"`
+	TotalWeight         uint           `json:"total_weight"`
+	Amount              float64        `json:"amount"`
+	DestinationID       uint           `json:"destination_id"`
+	Fee                 float64        `json:"fee"`
+	Courier             string         `json:"courier"`
+	Status              PurchaseStatus `json:"status"`
+	PaidAt              time.Time      `json:"paid_at"`
+	TrackingNumber      string         `json:"tracking_number"`
+	ShippedAt           *time.Time     `json:"shipped_at"`
+	CreatedAt           time.Time      `json:"created_at"`
+	UpdatedAt           *time.Time     `json:"updated_at"`
+	EstimatedDelivery   uint           `json:"estimated_delivery"`
+	EstimatedReceivedAt *time.Time     `json:"estimated_received_at"`
+	ReceivedAt          *time.Time     `json:"received_at"`
+	DeletedAt           gorm.DeletedAt `json:"deleted_at" gorm:"index"`
 }
 
 type PurchaseStatus string

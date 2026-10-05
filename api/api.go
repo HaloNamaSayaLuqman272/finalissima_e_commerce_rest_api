@@ -8,7 +8,10 @@ import (
 	"finalissima_e_commerce_rest_api/package/ai"
 	"finalissima_e_commerce_rest_api/package/constant"
 	"finalissima_e_commerce_rest_api/package/fileupload"
+	"finalissima_e_commerce_rest_api/package/rajaongkir"
 	"finalissima_e_commerce_rest_api/products"
+	"finalissima_e_commerce_rest_api/purchases"
+	"finalissima_e_commerce_rest_api/users"
 	"fmt"
 
 	"github.com/cloudinary/cloudinary-go/v2"
@@ -23,13 +26,19 @@ func NewEcho(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewa
 	var (
 		e                 = echo.New()
 		authService       = auth.New(repository)
+		userService       = users.New(repository)
 		categoryService   = categories.New(repository)
 		productService    = products.New(repository)
+		roService         = rajaongkir.InitService()
 		aiSeervice        = ai.InitService()
+		shippingService   = purchases.NewFakeShippingService()
+		purchaseService   = purchases.New(repository, productService, roService, shippingService)
 		uploader          = &fileupload.CloudinaryUploader{Cld: cld}
 		authHandler       = handlers.NewAuth(authService, jwtConfig)
+		userHandler       = handlers.NewUsers(userService, uploader)
 		categoriesHandler = handlers.NewCategories(categoryService)
 		productsHandler   = handlers.NewProducts(productService, uploader, aiSeervice)
+		purchaseHandler   = handlers.NewPurchases(purchaseService, userService, roService)
 	)
 
 	e.Validator = &middlewares.CustomValidator{
@@ -60,6 +69,11 @@ func NewEcho(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewa
 	authRoutes.POST("/register", authHandler.RegisterUser)
 	authRoutes.POST("/login", authHandler.LoginUser)
 
+	userRoutes := e.Group(constant.API_V1_PREFIX, echojwt.WithConfig(jwtMiddleware), middlewares.VerifyToken)
+
+	userRoutes.GET("/profile", userHandler.GetProfile)
+	userRoutes.PATCH("/profile/edit", userHandler.UpdateProfile)
+
 	categoryRoutes := e.Group(constant.API_V1_PREFIX, echojwt.WithConfig(jwtMiddleware), middlewares.VerifyToken)
 
 	categoryRoutes.POST("/categories", categoriesHandler.CreateCategory, middlewares.VerifyAdmin, middlewares.ValidateBody(&categories.CategoryRequest{}))
@@ -77,6 +91,20 @@ func NewEcho(repository *gorm.DB, cld *cloudinary.Cloudinary, jwtConfig middlewa
 	productRoutes.GET("/products", productsHandler.GetAllProducts)
 	productRoutes.PUT("/products/:id", productsHandler.UpdateProduct, middlewares.VerifyAdmin, middlewares.ValidateBody(&products.ProductRequest{}))
 	productRoutes.DELETE("/products/:id", productsHandler.DeleteProduct, middlewares.VerifyAdmin)
+
+	webhookRoutes := e.Group(fmt.Sprintf("%s/webhooks", constant.API_V1_PREFIX))
+	webhookRoutes.POST("/purchases/:id/payment-success", purchaseHandler.ConfirmPayment)
+
+	purchaseRoutes := e.Group(constant.API_V1_PREFIX, echojwt.WithConfig(jwtMiddleware), middlewares.VerifyToken)
+
+	purchaseRoutes.POST("/purchases", purchaseHandler.CreatePurchase, middlewares.ValidateBody(&purchases.PurchaseOrder{}))
+	purchaseRoutes.GET("/purchases/my", purchaseHandler.GetMyPurchases)
+	purchaseRoutes.GET("/purchases/user/:id", purchaseHandler.GetPurchasesByUserID, middlewares.VerifyAdmin)
+	purchaseRoutes.GET("/purchases/:id", purchaseHandler.GetByPurchaseID, middlewares.VerifyAdmin)
+	purchaseRoutes.GET("/purchases", purchaseHandler.GetAllPurchases, middlewares.VerifyAdmin)
+	purchaseRoutes.PATCH("/purchases/:id", purchaseHandler.UpdatePurchaseStatus, middlewares.VerifyAdmin, middlewares.ValidateBody(&purchases.UpdatePurchaseOrder{}))
+	purchaseRoutes.PATCH("/purchases/:id/cancel", purchaseHandler.CancelPurchase)
+	purchaseRoutes.DELETE("/purchases/:id", purchaseHandler.DeletePurchase, middlewares.VerifyAdmin)
 
 	return e
 }

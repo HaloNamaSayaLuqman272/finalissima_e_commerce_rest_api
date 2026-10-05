@@ -3,6 +3,7 @@ package rajaongkir
 type GetFeeRequest struct {
 	Origin      string
 	Destination string
+	Weight      uint
 	Courier     string
 }
 

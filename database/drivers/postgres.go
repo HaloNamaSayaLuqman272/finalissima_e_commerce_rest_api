@@ -7,6 +7,7 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type DBConfig struct {
@@ -21,7 +22,9 @@ func (config *DBConfig) InitDB() *gorm.DB {
 	var err error
 	var dsn string = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s", config.Host, config.Username, config.Password, config.Database, config.Port)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 	if err != nil {
 		log.Fatalf("error when connecting to the database: %s\n", err)
 	}
@@ -36,6 +39,8 @@ func MigrateDB(db *gorm.DB) {
 		models.Category{},
 		models.User{},
 		models.Product{},
+		models.Purchase{},
+		models.PurchaseItem{},
 	)
 	if err != nil {
 		log.Fatalf("database migration failed: %v\n", err)

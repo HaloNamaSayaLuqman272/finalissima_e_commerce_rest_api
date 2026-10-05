@@ -6,6 +6,7 @@ import (
 	"finalissima_e_commerce_rest_api/package/constant"
 	"finalissima_e_commerce_rest_api/package/utils"
 	"net/http"
+	"strconv"
 )
 
 const BASE_URL = "https://rajaongkir.komerce.id/api/v1"
@@ -31,12 +32,12 @@ func (r *service) GetDeliveryFee(req GetFeeRequest) (float64, string, error) {
 	payload := map[string]string{
 		"origin":      req.Origin,
 		"destination": req.Destination,
-		//"weight":      strconv.Itoa(totalWeight),
-		"courier": req.Courier,
+		"weight":      strconv.Itoa(int(req.Weight)),
+		"courier":     req.Courier,
 	}
 
 	res, err := r.client.SendFormEncoded(
-		"calculate/district/domestic-cost",
+		"/calculate/district/domestic-cost",
 		http.MethodPost,
 		payload,
 	)
