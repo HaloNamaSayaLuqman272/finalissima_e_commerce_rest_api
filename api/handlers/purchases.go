@@ -21,7 +21,7 @@ type Purchases struct {
 }
 
 func (p Purchases) CreatePurchase(ctx *echo.Context) error {
-	purchaseReq := ctx.Get("validatedBody").(*purchases.PurchaseOrder)
+	purchaseOrder := ctx.Get("validatedBody").(*purchases.PurchaseOrder)
 
 	userData := ctx.Get("userData").(*middlewares.JWTCustomsClaims)
 	user, err := p.users.GetProfile(ctx.Request().Context(), uint(userData.ID))
@@ -32,13 +32,20 @@ func (p Purchases) CreatePurchase(ctx *echo.Context) error {
 		})
 	}
 
-	purchaseReq.UserID = uint(user.ID)
+	purchaseOrder.UserID = uint(user.ID)
 
-	createdPurchase, err := p.purchases.CreatePurchase(ctx.Request().Context(), purchaseReq)
+	// err = p.purchases.CreatePurchase(ctx.Request().Context(), purchaseOrder)
+	// if err != nil {
+	// 	return ctx.JSON(http.StatusInternalServerError, dtos.Response[any]{
+	// 		Status:  "failed",
+	// 		Message: "create purchase failed",
+	// 	})
+	// }
+	createdPurchase, err := p.purchases.CreatePurchase(ctx.Request().Context(), purchaseOrder)
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, dtos.Response[any]{
+		return ctx.JSON(http.StatusInternalServerError, dtos.Response[any]{
 			Status:  "failed",
-			Message: err.Error(),
+			Message: "create purchase failed",
 		})
 	}
 

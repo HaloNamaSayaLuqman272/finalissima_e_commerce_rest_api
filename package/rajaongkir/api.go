@@ -1,6 +1,7 @@
 package rajaongkir
 
 import (
+	"context"
 	"encoding/json"
 	"finalissima_e_commerce_rest_api/package/clients"
 	"finalissima_e_commerce_rest_api/package/constant"
@@ -12,7 +13,7 @@ import (
 const BASE_URL = "https://rajaongkir.komerce.id/api/v1"
 
 type Service interface {
-	GetDeliveryFee(req GetFeeRequest) (float64, string, error)
+	GetDeliveryFee(ctx context.Context, req GetFeeRequest) (float64, string, error)
 }
 
 type service struct {
@@ -23,10 +24,9 @@ func InitService() Service {
 	return &service{
 		client: clients.InitHTTPClient(BASE_URL, 10, utils.GetConfigurance(constant.RAJAONGKIR_API_KEY)),
 	}
-	// code ini untuk melakukan sambungan koneksi ke "Rajaongkir"
 }
 
-func (r *service) GetDeliveryFee(req GetFeeRequest) (float64, string, error) {
+func (r *service) GetDeliveryFee(ctx context.Context, req GetFeeRequest) (float64, string, error) {
 	var response FeeResponse
 
 	payload := map[string]string{
@@ -37,6 +37,7 @@ func (r *service) GetDeliveryFee(req GetFeeRequest) (float64, string, error) {
 	}
 
 	res, err := r.client.SendFormEncoded(
+		ctx,
 		"/calculate/district/domestic-cost",
 		http.MethodPost,
 		payload,

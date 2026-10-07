@@ -34,6 +34,82 @@ func NewCreatePurchase(repository *gorm.DB, productService products.Service, roS
 }
 
 func (c createpurchase) CreatePurchase(ctx context.Context, purchaseOrder *PurchaseOrder) (Purchase, error) {
+	// err := c.repository.Transaction(func(tx *gorm.DB) error {
+	// 	var totalWeight uint
+	// 	var totalAmount float64
+	// 	items := make([]models.PurchaseItem, 0, len(purchaseOrder.Items))
+
+	// 	for _, productId := range purchaseOrder.Items {
+
+	// 		// check if product exists and has stock
+	// 		var product models.Product
+	// 		if err := tx.WithContext(ctx).Where("id = ? AND stock > 0", productId).Find(&product).Error; err != nil {
+	// 			return err
+	// 		}
+
+	// 		// make purchase order
+	// 		totalWeight += product.Weight * productId.Quantity
+	// 		totalAmount += product.Price * float64(productId.Quantity)
+
+	// 		items = append(items, models.PurchaseItem{
+	// 			ProductID: productId.ProductID,
+	// 			Quantity:  productId.Quantity,
+	// 			Weight:    product.Weight,
+	// 			Price:     product.Price,
+	// 		})
+
+	// 		purchaseOrder.TotalWeight = totalWeight
+	// 		purchaseOrder.Amount = totalAmount
+
+	// 		fee, etd, err := c.roService.GetDeliveryFee(ctx, rajaongkir.GetFeeRequest{
+	// 			Origin:      c.shopOriginDistrict,
+	// 			Destination: fmt.Sprintf("%d", purchaseOrder.DestinationID),
+	// 			Weight:      totalWeight,
+	// 			Courier:     purchaseOrder.Courier,
+	// 		})
+	// 		if err != nil {
+	// 			return err
+	// 		}
+
+	// 		purchaseOrder.Fee = fee
+
+	// 		days, ok := ParseETDDays(etd)
+	// 		if !ok {
+	// 			days = DefaultEstimatedDays
+	// 		}
+	// 		purchaseOrder.EstimatedDelivery = days
+	// 		estimated := time.Now().AddDate(0, 0, int(days))
+	// 		purchaseOrder.EstimatedReceivedAt = &estimated
+
+	// 		// create purchase order
+	// 		purchase := models.Purchase{
+	// 			UserID:              purchaseOrder.UserID,
+	// 			Items:               items,
+	// 			TotalWeight:         purchaseOrder.TotalWeight,
+	// 			Amount:              purchaseOrder.Amount,
+	// 			DestinationID:       purchaseOrder.DestinationID,
+	// 			Fee:                 purchaseOrder.Fee,
+	// 			Courier:             purchaseOrder.Courier,
+	// 			Status:              models.Pending,
+	// 			EstimatedDelivery:   purchaseOrder.EstimatedDelivery,
+	// 			EstimatedReceivedAt: purchaseOrder.EstimatedReceivedAt,
+	// 		}
+
+	// 		// save purchase order to database
+	// 		if err := tx.WithContext(ctx).Create(&purchase).Error; err != nil {
+	// 			return err
+	// 		}
+
+	// 		// update product stock
+	// 		if err := tx.WithContext(ctx).Model(&models.Product{}).Where("id = ?", productId.ProductID).Update("stock", gorm.Expr("stock - ?", productId.Quantity)).Error; err != nil {
+	// 			return err
+	// 		}
+	// 	}
+
+	// 	return nil
+	// })
+
+	// return err
 	var totalWeight uint
 	var totalAmount float64
 	items := make([]models.PurchaseItem, 0, len(purchaseOrder.Items))
@@ -41,11 +117,11 @@ func (c createpurchase) CreatePurchase(ctx context.Context, purchaseOrder *Purch
 	for _, itemPurchaseOrder := range purchaseOrder.Items {
 		product, err := c.productService.GetProductByID(ctx, itemPurchaseOrder.ProductID)
 		if err != nil {
-			return Purchase{}, fmt.Errorf("product id %d not found", itemPurchaseOrder.ProductID)
+			return Purchase{}, err
 		}
 
 		if product.Stock < itemPurchaseOrder.Quantity {
-			return Purchase{}, fmt.Errorf("product stock %s not enough", product.NameProduct)
+			return Purchase{}, err
 		}
 
 		totalWeight += product.Weight * itemPurchaseOrder.Quantity
@@ -62,14 +138,14 @@ func (c createpurchase) CreatePurchase(ctx context.Context, purchaseOrder *Purch
 	purchaseOrder.TotalWeight = totalWeight
 	purchaseOrder.Amount = totalAmount
 
-	fee, etd, err := c.roService.GetDeliveryFee(rajaongkir.GetFeeRequest{
+	fee, etd, err := c.roService.GetDeliveryFee(ctx, rajaongkir.GetFeeRequest{
 		Origin:      c.shopOriginDistrict,
 		Destination: fmt.Sprintf("%d", purchaseOrder.DestinationID),
 		Weight:      totalWeight,
 		Courier:     purchaseOrder.Courier,
 	})
 	if err != nil {
-		return Purchase{}, fmt.Errorf("failed calculate shipping cost: %w", err)
+		return Purchase{}, err
 	}
 	purchaseOrder.Fee = fee
 
@@ -111,5 +187,14 @@ func (c createpurchase) CreatePurchase(ctx context.Context, purchaseOrder *Purch
 		return Purchase{}, err
 	}
 
-	return c.getbypurchaseid.GetByPurchaseID(ctx, purchase.ID)
+	fmt.Println("DEBUG purchase.ID setelah transaksi =", purchase.ID)
+
+	record := new(Purchase)
+	if err := c.repository.WithContext(ctx).Preload("Items").First(record, purchase.ID).Error; err != nil {
+		return Purchase{}, err
+	}
+
+	fmt.Println("DEBUG record setelah First =", record.ID, record.Amount)
+
+	return *record, err
 }

@@ -1,6 +1,7 @@
 package ai
 
 import (
+	"context"
 	"encoding/json"
 	"finalissima_e_commerce_rest_api/package/clients"
 	"finalissima_e_commerce_rest_api/package/constant"
@@ -13,7 +14,7 @@ import (
 const BASE_URL = "https://openrouter.ai/api/v1"
 
 type Service interface {
-	GetProductRecommendation(req ProductRecommendationRequest) (PromptResponse, error)
+	GetProductRecommendation(ctx context.Context, req ProductRecommendationRequest) (PromptResponse, error)
 }
 
 type service struct {
@@ -26,7 +27,7 @@ func InitService() Service {
 	}
 }
 
-func (r *service) GetProductRecommendation(req ProductRecommendationRequest) (PromptResponse, error) {
+func (r *service) GetProductRecommendation(ctx context.Context, req ProductRecommendationRequest) (PromptResponse, error) {
 	var response PromptResponse
 	model := utils.GetConfigurance(constant.AI_MODEL)
 
@@ -50,7 +51,7 @@ func (r *service) GetProductRecommendation(req ProductRecommendationRequest) (Pr
 		},
 	}
 
-	res, err := r.client.SendJSON("/chat/completions", http.MethodPost, payload)
+	res, err := r.client.SendJSON(ctx, "/chat/completions", http.MethodPost, payload)
 	if err != nil {
 		return PromptResponse{}, err
 	}

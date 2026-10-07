@@ -18,7 +18,7 @@ type Purchase struct {
 	Fee                 float64               `json:"fee"`
 	Courier             string                `json:"courier"`
 	Status              models.PurchaseStatus `json:"status"`
-	PaidAt              time.Time             `json:"paid_at"`
+	PaidAt              *time.Time            `json:"paid_at"`
 	TrackingNumber      string                `json:"tracking_number"`
 	ShippedAt           *time.Time            `json:"shipped_at"`
 	CreatedAt           time.Time             `json:"created_at"`

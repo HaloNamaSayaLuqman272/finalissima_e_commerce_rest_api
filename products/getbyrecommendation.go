@@ -41,7 +41,7 @@ func (g getbyrecommendation) GetProductByRecommendation(ctx context.Context, pag
 
 	// minta AI memilih dari daftar itu
 	aiService := ai.InitService()
-	res, err := aiService.GetProductRecommendation(promptRequest)
+	res, err := aiService.GetProductRecommendation(ctx, promptRequest)
 	if err != nil {
 		return utils.Pagination{}, err
 	}
