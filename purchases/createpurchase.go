@@ -33,7 +33,7 @@ func NewCreatePurchase(repository *gorm.DB, productService products.Service, roS
 	}
 }
 
-func (c createpurchase) CreatePurchase(ctx context.Context, purchaseOrder *PurchaseOrder) (Purchase, error) {
+func (c createpurchase) CreatePurchase(ctx context.Context, purchaseOrder *PurchaseOrder) error {
 	// err := c.repository.Transaction(func(tx *gorm.DB) error {
 	// 	var totalWeight uint
 	// 	var totalAmount float64
@@ -117,11 +117,11 @@ func (c createpurchase) CreatePurchase(ctx context.Context, purchaseOrder *Purch
 	for _, itemPurchaseOrder := range purchaseOrder.Items {
 		product, err := c.productService.GetProductByID(ctx, itemPurchaseOrder.ProductID)
 		if err != nil {
-			return Purchase{}, err
+			return err
 		}
 
 		if product.Stock < itemPurchaseOrder.Quantity {
-			return Purchase{}, err
+			return err
 		}
 
 		totalWeight += product.Weight * itemPurchaseOrder.Quantity
@@ -145,7 +145,7 @@ func (c createpurchase) CreatePurchase(ctx context.Context, purchaseOrder *Purch
 		Courier:     purchaseOrder.Courier,
 	})
 	if err != nil {
-		return Purchase{}, err
+		return err
 	}
 	purchaseOrder.Fee = fee
 
@@ -183,18 +183,27 @@ func (c createpurchase) CreatePurchase(ctx context.Context, purchaseOrder *Purch
 
 		return nil
 	})
-	if err != nil {
-		return Purchase{}, err
-	}
+	// if err != nil {
+	// 	return Purchase{}, err
+	// }
 
-	fmt.Println("DEBUG purchase.ID setelah transaksi =", purchase.ID)
+	// fmt.Println("DEBUG purchase.ID setelah transaksi =", purchase.ID)
 
-	record := new(Purchase)
-	if err := c.repository.WithContext(ctx).Preload("Items").First(record, purchase.ID).Error; err != nil {
-		return Purchase{}, err
-	}
+	// record := new(Purchase)
+	// fmt.Println("DEBUG record sebelum First tanpa preload")
+	// if err := c.repository.WithContext(ctx).First(record, purchase.ID).Error; err != nil {
+	// 	fmt.Println("DEBUG First tanpa preload error")
+	// 	return Purchase{}, err
+	// }
+	// fmt.Println("DEBUG sesudah First tanpa preload =", record.ID)
 
-	fmt.Println("DEBUG record setelah First =", record.ID, record.Amount)
+	// if err := c.repository.WithContext(ctx).Model(record).Association("Items").Find(&record.Items); err != nil {
+	// 	fmt.Println("DEBUG association items error:", err)
+	// 	return Purchase{}, err
+	// }
 
-	return *record, err
+	// fmt.Println("DEBUG record setelah load items, jumlah items =", len(record.Items))
+
+	// return *record, err
+	return err
 }

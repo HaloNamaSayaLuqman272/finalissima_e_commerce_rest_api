@@ -10,7 +10,7 @@ import (
 )
 
 type Service interface {
-	CreatePurchase(ctx context.Context, purchaseOrder *PurchaseOrder) (Purchase, error)
+	CreatePurchase(ctx context.Context, purchaseOrder *PurchaseOrder) error
 	GetByPurchaseID(ctx context.Context, id uint) (Purchase, error)
 	GetPurchaseByUserID(ctx context.Context, userId uint) ([]Purchase, error)
 	GetAllPurchases(ctx context.Context, pagination utils.Pagination) ([]Purchase, error)
@@ -46,7 +46,7 @@ func New(repository *gorm.DB, productService products.Service, roService rajaong
 	}
 }
 
-func (s service) CreatePurchase(ctx context.Context, purchaseOrder *PurchaseOrder) (Purchase, error) {
+func (s service) CreatePurchase(ctx context.Context, purchaseOrder *PurchaseOrder) error {
 	return s.createpurchase.CreatePurchase(ctx, purchaseOrder)
 }
 

@@ -34,25 +34,25 @@ func (p Purchases) CreatePurchase(ctx *echo.Context) error {
 
 	purchaseOrder.UserID = uint(user.ID)
 
-	// err = p.purchases.CreatePurchase(ctx.Request().Context(), purchaseOrder)
-	// if err != nil {
-	// 	return ctx.JSON(http.StatusInternalServerError, dtos.Response[any]{
-	// 		Status:  "failed",
-	// 		Message: "create purchase failed",
-	// 	})
-	// }
-	createdPurchase, err := p.purchases.CreatePurchase(ctx.Request().Context(), purchaseOrder)
+	err = p.purchases.CreatePurchase(ctx.Request().Context(), purchaseOrder)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, dtos.Response[any]{
 			Status:  "failed",
 			Message: "create purchase failed",
 		})
 	}
+	// createdPurchase, err := p.purchases.CreatePurchase(ctx.Request().Context(), purchaseOrder)
+	// if err != nil {
+	// 	return ctx.JSON(http.StatusInternalServerError, dtos.Response[any]{
+	// 		Status:  "failed",
+	// 		Message: "create purchase failed",
+	// 	})
+	// }
 
 	return ctx.JSON(http.StatusCreated, dtos.Response[purchases.Purchase]{
 		Status:  "success",
 		Message: "purchase created successfully",
-		Data:    createdPurchase,
+		// Data:    createdPurchase,
 	})
 }
 
